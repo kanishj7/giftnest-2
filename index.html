@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#eaf5ff">
+  <meta name="description" content="D-Zine — a collection of media, images, audio, video and a location map.">
+  <title>D-Zine | Media Gallery</title>
+
+  <style>
+    :root {
+      --ink: #18324b;
+      --muted: #5d7287;
+      --blue: #2878bd;
+      --blue-dark: #175b98;
+      --blue-soft: #eaf5ff;
+      --surface: #ffffff;
+      --line: #d8e8f5;
+      --shadow: 0 14px 36px rgba(30, 79, 119, .10);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 32px 18px 48px;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(174, 219, 255, .55), transparent 32rem),
+        linear-gradient(180deg, #f4faff 0%, #edf6ff 48%, #f8fbff 100%);
+    }
+
+    .page { width: min(100%, 1050px); margin: 0 auto; }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 24px;
+      background: rgba(255, 255, 255, .86);
+      border: 1px solid rgba(216, 232, 245, .9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
+
+    .brand img {
+      width: 54px;
+      height: 54px;
+      object-fit: cover;
+      border-radius: 15px;
+      background: var(--blue-soft);
+    }
+
+    .brand h1 { margin: 0; font-size: clamp(1.45rem, 3vw, 2rem); letter-spacing: -.04em; }
+    .brand p { margin: 1px 0 0; color: var(--muted); font-size: .88rem; }
+
+    nav { display: flex; flex-wrap: wrap; gap: 8px; }
+    nav a, .media-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 14px;
+      color: var(--blue-dark);
+      font-size: .9rem;
+      font-weight: 650;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f7fbff;
+      transition: background .2s ease, transform .2s ease, border-color .2s ease;
+    }
+    nav a:hover, .media-link:hover {
+      background: #e5f2ff;
+      border-color: #a9d1f1;
+      transform: translateY(-1px);
+    }
+
+    .intro { padding: 48px 12px 28px; text-align: center; }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 5px 12px;
+      color: var(--blue-dark);
+      background: #dceeff;
+      border-radius: 999px;
+      font-size: .76rem;
+      font-weight: 750;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .intro h2 { margin: 0; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.12; letter-spacing: -.055em; }
+    .intro p { max-width: 610px; margin: 14px auto 0; color: var(--muted); }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      min-width: 0;
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      scroll-margin-top: 20px;
+    }
+    .card h3 { margin: 0 0 5px; font-size: 1.15rem; letter-spacing: -.02em; }
+    .card .description { margin: 0 0 16px; color: var(--muted); font-size: .92rem; }
+    .card audio { display: block; width: 100%; margin-top: 16px; }
+    .media-frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: 190px;
+      background: #f1f7fd;
+      border: 1px solid #e4eff8;
+      border-radius: 14px;
+    }
+    .media-frame img {
+      display: block;
+      width: 100%;
+      max-height: 380px;
+      object-fit: contain;
+    }
+    .media-frame video { display: block; width: 100%; max-height: 390px; background: #101820; }
+    .map-card { grid-column: 1 / -1; }
+    .map-frame {
+      display: block;
+      width: 100%;
+      height: 390px;
+      border: 0;
+      border-radius: 14px;
+      background: #edf5fc;
+    }
+    .link-card { display: flex; flex-direction: column; justify-content: center; }
+    .link-card .media-link { align-self: flex-start; gap: 8px; }
+
+    footer { padding: 28px 10px 0; color: var(--muted); text-align: center; font-size: .85rem; }
+
+    @media (max-width: 700px) {
+      body { padding: 16px 12px 32px; }
+      .site-header { align-items: flex-start; flex-direction: column; padding: 16px; }
+      nav { width: 100%; }
+      nav a { flex: 1; }
+      .intro { padding: 36px 8px 24px; }
+      .gallery { grid-template-columns: 1fr; gap: 14px; }
+      .card { padding: 18px; }
+      .map-card { grid-column: auto; }
+      .map-frame { height: 300px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="brand">
+        <img src="Downloads/ChatGPT Image Sep 24, 2026, 08_32_31 PM.png" alt="D-Zine logo">
+        <div>
+          <h1>D - Zine</h1>
+          <p>Your collection of media and moments</p>
+        </div>
+      </div>
+
+      <nav aria-label="Page navigation">
+        <a href="#audio">Audio</a>
+        <a href="#images">Images</a>
+        <a href="#video">Video</a>
+        <a href="#location">Location</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-heading">
+        <span class="eyebrow">Digital media gallery</span>
+        <h2 id="page-heading">Explore the collection</h2>
+        <p>A simple space to discover the featured media, listen to an audio track, view images, watch a video and explore the map location.</p>
+      </section>
+
+      <section class="gallery" aria-label="Media collection">
+        <article class="card link-card">
+          <h3>Featured media</h3>
+          <p class="description">Open the shared media element in a new tab.</p>
+          <a class="media-link" href="https://share.google/X1mqmbUvc25w1pXI5" target="_blank" rel="noopener noreferrer">
+            Open media element <span aria-hidden="true">↗</span>
+          </a>
+        </article>
+
+        <article class="card" id="audio">
+          <h3>Audio track</h3>
+          <p class="description">Listen to the featured soundtrack.</p>
+          <audio controls preload="metadata">
+            <source src="Downloads/Harmony-of-the-Earth-chosic.com_.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </article>
+
+        <article class="card" id="images">
+          <h3>Image 1</h3>
+          <p class="description">First featured image.</p>
+          <div class="media-frame">
+            <img src="Screenshot 2026-08-27 at 10.06.10 PM.png" alt="First featured image" loading="lazy">
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Image 2</h3>
+          <p class="description">Second featured image.</p>
+          <div class="media-frame">
+            <img src="Screenshot 2026-08-27 at 10.05.26 PM.png" alt="Second featured image" loading="lazy">
+          </div>
+        </article>
+
+        <article class="card" id="video">
+          <h3>Sample video</h3>
+          <p class="description">Watch the featured video clip.</p>
+          <div class="media-frame">
+            <video controls loop preload="metadata" playsinline>
+              <source src="Downloads/27091-361827476_medium.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </article>
+
+        <article class="card map-card" id="location">
+          <h3>Map location</h3>
+          <p class="description">Explore the location on the interactive map.</p>
+          <iframe
+            class="map-frame"
+            title="Map showing ICON Clinical Research Private Limited"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3098.557361503945!2d80.22896877391176!3d12.947145587365975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525daa7b67d2a1%3A0xae3b032b70e4ea8e!2sICON%20Clinical%20Research%20Private%20Limited!5e1!3m2!1sen!2sin!4v1788696885306!5m2!1sen!2sin"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin">
+          </iframe>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2026 D - Zine. Designed with care.</p>
+    </footer>
+  </div>
+</body>
+</html>
